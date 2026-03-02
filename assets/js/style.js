@@ -2,72 +2,58 @@
 (function () {
     "use strict";
 
-    const forms = document.querySelectorAll(".needs-validation");
-
-    Array.from(forms).forEach(function (form) {
-        form.addEventListener(
-            "submit",
-            function (event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                } else {
-                    event.preventDefault();
-                    window.location.href = "index.html";
-                }
-
-                form.classList.add("was-validated");
-            },
-            false,
-        );
+    document.querySelectorAll(".needs-validation").forEach(form => {
+        form.addEventListener("submit", event => {
+            event.preventDefault();
+            if (!form.checkValidity()) {
+                event.stopPropagation();
+            } else {
+                window.location.href = "index.html";
+            }
+            form.classList.add("was-validated");
+        }, false);
     });
 })();
 
-// Index Page - Header Event Handlers
-document.addEventListener("DOMContentLoaded", function() {
-    // Xử lý sự kiện click vào icon Bootstrap để reset trang
-    const bootstrapIcon = document.getElementById('bootstrapIcon');
-    if (bootstrapIcon) {
-        bootstrapIcon.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.reload();
-        });
-    }
-
-    // Xử lý sự kiện click vào nút Log out để chuyển đến sign-in.html
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function() {
-            window.location.href = 'sign-in.html';
-        });
-    }
-
-    // Khởi tạo Tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
+// Index Page – Header & Navigation
+document.addEventListener("DOMContentLoaded", () => {
+    // Reload page when Bootstrap icon is clicked
+    document.getElementById('bootstrapIcon')?.addEventListener('click', e => {
+        e.preventDefault();
+        window.location.reload();
     });
 
-    // Active nav link khi scroll
+    // Navigate to sign-in page when Logout button is clicked
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        window.location.href = 'sign-in.html';
+    });
+
+    // Initialise all tooltips
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+
+    // Highlight active nav link on scroll (throttled via requestAnimationFrame)
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.sidebar .nav-link');
+    let ticking = false;
 
-    window.addEventListener('scroll', function() {
-        let current = '';
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (pageYOffset >= (sectionTop - 100)) {
-                current = section.getAttribute('id');
-            }
-        });
+    window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            let current = '';
+            const scrollY = window.scrollY;
 
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === '#' + current) {
-                link.classList.add('active');
-            }
+            sections.forEach(section => {
+                if (scrollY >= section.offsetTop - 100) {
+                    current = section.id;
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+            });
+
+            ticking = false;
         });
     });
 });

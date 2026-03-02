@@ -146,6 +146,24 @@ section .card:hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
+/* Carousel – aspect-ratio keeps height proportional to column width at every breakpoint */
+#demoCarousel {
+    aspect-ratio: 8 / 3;   /* matches the 800×300 source images */
+    overflow: hidden;
+}
+
+#demoCarousel .carousel-inner,
+#demoCarousel .carousel-item {
+    height: 100%;
+}
+
+#demoCarousel .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
 /* Code blocks */
 pre {
     background-color: #f5f5f5;
@@ -167,6 +185,16 @@ pre code {
     padding: 0;
 }
 
+pre[class*="language-"] {
+    margin: 0;
+    border-radius: 0.375rem;
+}
+
+code[class*="language-"] {
+    background-color: transparent;
+    padding: 0;
+}
+
 /* Team Member Cards */
 .list-group-item {
     transition: background-color 0.3s ease;
@@ -176,7 +204,6 @@ pre code {
     background-color: #f8f9fa;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
     .sidebar {
         min-height: auto;
@@ -195,7 +222,3 @@ pre code {
     }
 }
 
-/* Fix for card body overflow in sections */
-section .card-body {
-    overflow: visible !important;
-}
