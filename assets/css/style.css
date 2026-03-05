@@ -76,12 +76,21 @@ html {
     border-color: #dc3545;
 }
 
-/* Sidebar - Left */
 .sidebar {
     background-color: #f8f9fa;
     min-height: calc(100vh - 56px);
     padding: 1rem 0;
     border-right: 1px solid #dee2e6;
+}
+
+@media (min-width: 992px) {
+    .sidebar:not(.right-sidebar) {
+        position: sticky;
+        top: 56px;
+        height: calc(100vh - 56px);
+        overflow-y: auto;
+        z-index: 1000;
+    }
 }
 
 .sidebar .nav-link {
@@ -146,9 +155,8 @@ section .card:hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Carousel – aspect-ratio keeps height proportional to column width at every breakpoint */
 #demoCarousel {
-    aspect-ratio: 8 / 3;   /* matches the 800×300 source images */
+    aspect-ratio: 8 / 3;
     overflow: hidden;
 }
 
@@ -174,9 +182,14 @@ pre {
 
 code {
     color: #e83e8c;
-    background-color: #f8f9fa;
+    background-color: #f1f1f1;
     padding: 0.125rem 0.375rem;
     border-radius: 0.25rem;
+}
+
+.alert code {
+    background-color: transparent;
+    padding: 0;
 }
 
 pre code {
